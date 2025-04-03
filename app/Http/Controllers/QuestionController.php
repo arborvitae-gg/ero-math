@@ -13,7 +13,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        return Question::all();
     }
 
     /**
@@ -21,7 +21,19 @@ class QuestionController extends Controller
      */
     public function store(StoreQuestionRequest $request)
     {
-        //
+        $fields = $request->validate([
+            'category' => 'required',
+            'question_text' => 'required',
+            'choice_a_text' => 'required',
+            'choice_b_text' => 'required',
+            'choice_c_text' => 'required',
+            'choice_d_text' => 'required',
+            'correct_answer' => 'required',
+            'created_by' => 'required',
+            // no images yet
+        ]);
+        $question = Question::create($fields);
+        return $question;
     }
 
     /**
@@ -29,7 +41,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        return $question;
     }
 
     /**
@@ -37,7 +49,18 @@ class QuestionController extends Controller
      */
     public function update(UpdateQuestionRequest $request, Question $question)
     {
-        //
+        $fields = $request->validate([
+            'category' => 'required',
+            'question_text' => 'required',
+            'choice_a_text' => 'required',
+            'choice_b_text' => 'required',
+            'choice_c_text' => 'required',
+            'choice_d_text' => 'required',
+            'correct_answer' => 'required',
+            'created_by' => 'required',
+        ]);
+        $question->update($fields);
+        return $question;
     }
 
     /**
@@ -45,6 +68,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $question->delete();
+        return ['Message' => 'Question successfully deleted'];
     }
 }
