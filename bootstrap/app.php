@@ -12,8 +12,28 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Sanctum
         $middleware->statefulApi();
+
+        // API
+        $middleware->api(prepend: [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Illuminate\Session\Middleware\StartSession::class, // Required for SPA auth
+        ]);
+
+        // Custom "spa" group (stateful for first-party SPA)
+        $middleware->group('spa', [
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        ]);
+
+        // Admin middleware alias
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        ]);
     })
+
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

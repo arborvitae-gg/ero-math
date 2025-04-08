@@ -9,29 +9,23 @@ use App\Http\Controllers\QuestionController;
 
 // home
 Route::get('/', function () {
-     return 'Testing';
+     return 'Ero-Math API';
 });
 
 // Public routes (no auth)
-Route::middleware('guest')->group(function () {
+Route::middleware('spa')->group(function () {
+    Route::get('/sanctum/csrf-cookie', fn () => response()->noContent());
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-// Authenticated user routes (SPA)
-Route::middleware('auth:sanctum')->group(function () {
-    // User profile
+// Authenticated SPA routes
+Route::middleware(['spa', 'auth:sanctum'])->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // Admin-only routes
     Route::middleware('admin')->group(function () {
-        Route::apiResource('/users', UserController::class);
         Route::apiResource('/questions', QuestionController::class);
     });
 });
-
-
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');

@@ -3,22 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
-use App\Http\Requests\StoreQuestionRequest;
-use App\Http\Requests\UpdateQuestionRequest;
+use App\Http\Requests\QuestionRequest;
 
 class QuestionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // return all questions
     public function index()
     {
         return Question::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // create new question
     public function store(QuestionRequest $request)
     {
         $question = Question::create([...$request->validated(), 'created_by' => auth()->id()]);
@@ -28,23 +23,19 @@ class QuestionController extends Controller
             $question->choices()->create($choice);
         }
 
-        return response()->json([ // ✅ JSON response
+        return response()->json([
             'question' => $question,
             'choices' => $question->choices,
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // show specific question
     public function show(Question $question)
     {
         return $question;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // edit question
     public function update(QuestionRequest $request, Question $question)
     {
         $this->authorize('update', $question);
@@ -56,19 +47,17 @@ class QuestionController extends Controller
             $question->choices()->create($choice);
         }
 
-        return response()->json([ // ✅ JSON response
+        return response()->json([
             'question' => $question,
             'choices' => $question->choices,
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // delete question
     public function destroy(Question $question)
     {
         $this->authorize('delete', $question);
         $question->delete();
-        return response()->noContent(); // ✅ 204 status
+        return response()->noContent(); // 204 status
     }
 }

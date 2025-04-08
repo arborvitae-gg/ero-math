@@ -6,19 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class QuestionRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true; // Authorization handled by controller policies
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
@@ -33,18 +25,18 @@ class QuestionRequest extends FormRequest
         ];
     }
 
-    // Trim whitespace and sanitize inputs
-    public function prepareForValidation()
-    {
-        $this->merge([
-            'content' => trim($this->content),
-            'choices' => collect($this->choices)->map(function ($choice) {
-                return [
-                    'identifier' => trim($choice['identifier']),
-                    'content' => trim($choice['content']),
-                    'content_type' => trim($choice['content_type']),
-                ];
-            })->toArray(),
-        ]);
-    }
+    // // Trim whitespace and sanitize inputs
+    // public function prepareForValidation()
+    // {
+    //     $this->merge([
+    //         'content' => trim($this->content),
+    //         'choices' => collect($this->choices)->map(function ($choice) {
+    //             return [
+    //                 'identifier' => trim($choice['identifier']),
+    //                 'content' => trim($choice['content']),
+    //                 'content_type' => trim($choice['content_type']),
+    //             ];
+    //         })->toArray(),
+    //     ]);
+    // }
 }
