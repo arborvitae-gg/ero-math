@@ -19,21 +19,19 @@ class QuestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreQuestionRequest $request)
+    public function store(QuestionRequest $request)
     {
-        $fields = $request->validate([
-            'category' => 'required',
-            'question_text' => 'required',
-            'choice_a_text' => 'required',
-            'choice_b_text' => 'required',
-            'choice_c_text' => 'required',
-            'choice_d_text' => 'required',
-            'correct_answer' => 'required',
-            'created_by' => 'required',
-            // no images yet
-        ]);
-        $question = Question::create($fields);
-        return $question;
+        $question = Question::create([...$request->validated(), 'created_by' => auth()->id()]);
+
+        // Attach choices
+        foreach ($request->choices as $choice) {
+            $question->choices()->create($choice);
+        }
+
+        return response()->json([ // ✅ JSON response
+            'question' => $question,
+            'choices' => $question->choices,
+        ], 201);
     }
 
     /**
@@ -47,20 +45,21 @@ class QuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateQuestionRequest $request, Question $question)
+    public function update(QuestionRequest $request, Question $question)
     {
-        $fields = $request->validate([
-            'category' => 'required',
-            'question_text' => 'required',
-            'choice_a_text' => 'required',
-            'choice_b_text' => 'required',
-            'choice_c_text' => 'required',
-            'choice_d_text' => 'required',
-            'correct_answer' => 'required',
-            'created_by' => 'required',
+        $this->authorize('update', $question);
+        $question->update($request->validated());
+
+        // Delete existing choices and recreate
+        $question->choices()->delete();
+        foreach ($request->choices as $choice) {
+            $question->choices()->create($choice);
+        }
+
+        return response()->json([ // ✅ JSON response
+            'question' => $question,
+            'choices' => $question->choices,
         ]);
-        $question->update($fields);
-        return $question;
     }
 
     /**
@@ -68,7 +67,8 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
+        $this->authorize('delete', $question);
         $question->delete();
-        return ['Message' => 'Question successfully deleted'];
+        return response()->noContent(); // ✅ 204 status
     }
 }

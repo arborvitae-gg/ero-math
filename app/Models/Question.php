@@ -2,21 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Question extends Model
 {
-    /** @use HasFactory<\Database\Factories\QuestionFactory> */
-    use HasFactory;
-
     protected $fillable = [
         'category',
-        'question_text', 'question_image',
-        'choice_a_text', 'choice_a_image',
-        'choice_b_text', 'choice_b_image',
-        'choice_c_text', 'choice_c_image',
-        'choice_d_text', 'choice_d_image',
-        'correct_answer', 'created_by'
+        'content', // Stores text or image URL
+        'content_type', // text or image
+        'correct_answer', // A, B, C, D
+        'created_by', // admin's user_id
     ];
+
+    // Relationship with choices
+    public function choices(): HasMany
+    {
+        return $this->hasMany(Choice::class);
+    }
+
+    // Relationship with Admin
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

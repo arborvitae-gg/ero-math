@@ -6,26 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-
-            $table->string('last_name');
             $table->string('first_name');
             $table->string('middle_name')->nullable();
-
-            $table->integer('grade_level')->nullable(); // Nullable for admins
-            $table->string('school')->nullable(); // Nullable for admins
-            $table->string('coach_name')->nullable();
-
+            $table->string('last_name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['user', 'admin'])->default('user');
+            $table->integer('grade_level')->nullable(); // Required for users, optional for admins
+            $table->string('school')->nullable();
+            $table->string('coach_name')->nullable();
+            $table->enum('role', ['admin', 'user'])->default('user');
+            $table->boolean('quiz_enabled')->nullable()->default(false); // Required for users, optional for admins
             $table->rememberToken();
             $table->timestamps();
         });
@@ -46,13 +41,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
     }
 };
