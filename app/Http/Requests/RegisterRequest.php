@@ -30,8 +30,8 @@ class RegisterRequest extends FormRequest
             'grade_level' => 'required_if:role,user|integer|between:1,5|nullable',
             'school' => 'nullable|string|max:255',
             'coach_name' => 'nullable|string|max:255',
-            'role' => 'required|in:admin,user',
-            'quiz_enabled' => 'nullable|boolean',
+            'role' => 'required|in:admin,user', // defaults to user
+            'quiz_enabled' => 'nullable|boolean', // default to false for users,
         ];
     }
 
