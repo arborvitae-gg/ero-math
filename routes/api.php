@@ -3,14 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\QuestionController;
-
-// home
-Route::get('/', function () {
-     return 'Ero-Math API';
-});
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\QuestionController;
 
 // Public routes (no auth)
 Route::middleware('spa')->group(function () {
