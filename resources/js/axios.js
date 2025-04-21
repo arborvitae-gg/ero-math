@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: '/api',
+    baseURL: '/api/v1',
     withCredentials: true,
     headers: {
         'Accept': 'application/json',
@@ -9,14 +9,9 @@ const api = axios.create({
     }
 });
 
-// Auto CSRF handling
-api.interceptors.request.use(async (config) => {
-    if (!document.cookie.includes('XSRF-TOKEN')) {
-        await axios.get('/sanctum/csrf-cookie', {
-            baseURL: '/',
-            withCredentials: true
-        });
-    }
+// CSRF handling
+api.interceptors.request.use(async config => {
+    await axios.get('/api/v1/csrf');
     return config;
 });
 

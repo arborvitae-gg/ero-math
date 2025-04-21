@@ -15,12 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
         // Sanctum
         $middleware->statefulApi();
 
-        // API
-        // $middleware->api(prepend: [
-        //     \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        //     \Illuminate\Session\Middleware\StartSession::class, // Required for SPA auth
-        // ]);
-
         // Custom "spa" group (stateful for first-party SPA)
         $middleware->group('spa', [
             \Illuminate\Cookie\Middleware\EncryptCookies::class,

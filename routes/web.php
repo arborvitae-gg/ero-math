@@ -3,18 +3,24 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+// Home
+Route::get('/', function () {
+    return view('welcome');
+});
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+// Public Views
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [FrontendController::class, 'showLogin'])->name('login');
+    Route::get('/register', [FrontendController::class, 'showRegister'])->name('register');
+});
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
+// Authenticated Views
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/dashboard', [FrontendController::class, 'showDashboard'])->name('dashboard');
 
-// require __DIR__.'/auth.php';
+    // Admin-only Views
+    Route::middleware('admin')->group(function () {
+        Route::get('/admin/questions', [AdminController::class, 'manageQuestions']);
+        // Add other admin views here
+    });
+});

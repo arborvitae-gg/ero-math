@@ -8,12 +8,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
-    public function handle(Request $request, Closure $next): Response
+    // public function handle(Request $request, Closure $next): Response
+    // {
+    //     if ($request->user() && $request->user()->role === 'admin') {
+    //         return $next($request);
+    //     }
+
+    //     return response()->json(['message' => 'Unauthorized'], 403);
+    // }
+    public function handle($request, Closure $next)
     {
-        if ($request->user() && $request->user()->role === 'admin') {
+        if (Auth::check() && Auth::user()->isAdmin()) {
             return $next($request);
         }
 
-        return response()->json(['message' => 'Unauthorized'], 403);
+        return $request->expectsJson()
+            ? response()->json(['message' => 'Unauthorized'], 403)
+            : redirect()->route('login');
     }
 }
