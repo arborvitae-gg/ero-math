@@ -8,13 +8,12 @@ Install the following PHP extensions: (Menu/PHP/Extensions)
 - pgsql
 - pdo_pgsql
 
-# For Laravel App
-Make sure to have a '.env' file (Copy '.env.example' and rename it to '.env')
-
-Generate an APK Key using the command below:
-php artisan key:generate
-
 # For Database
 Create a Supabase Account, then send your Supabase email to get an invitation to the Supabase project
 
-In .env, rename DB_URL to the URL 
+# For Laravel App
+- Make sure to have a '.env' file (Copy '.env.example' and rename it to '.env')
+- In '.env', rename DB_URL to the Supabase project URL (needs to be invited to Supabase Project First)
+- Generate an APK Key using the command: php artisan key:generate
+
+
