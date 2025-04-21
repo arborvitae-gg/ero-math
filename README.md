@@ -17,5 +17,4 @@ php artisan key:generate
 # For Database
 Create a Supabase Account, then send your Supabase email to get an invitation to the Supabase project
 
-In .env, rename DB_URL to the URL below:
-postgresql://postgres.cwwmwvlreqlljpvtcchc:OpItiA5SOEd7SgdP@aws-0-us-east-2.pooler.supabase.com:5432/postgres
+In .env, rename DB_URL to the URL 
