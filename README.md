@@ -15,5 +15,3 @@ Create a Supabase Account, then send your Supabase email to get an invitation to
 - Make sure to have a '.env' file (Copy '.env.example' and rename it to '.env')
 - In '.env', rename DB_URL to the Supabase project URL (needs to be invited to Supabase Project First)
 - Generate an APK Key using the command: php artisan key:generate
-
-
