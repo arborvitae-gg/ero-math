@@ -8,6 +8,12 @@ use Illuminate\Auth\Access\Response;
 
 class QuestionPolicy
 {
+    // placeholder
+    public function viewAdminDashboard(User $user)
+    {
+        return $user->isAdmin();
+    }
+
     /**
      * Determine whether the user can view any models.
      */
