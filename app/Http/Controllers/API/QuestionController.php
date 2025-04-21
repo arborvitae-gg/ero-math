@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\Question;
 use App\Http\Requests\QuestionRequest;
 
-class QuestionController extends Controller
+class QuestionController
 {
     // return all questions
     public function index()

@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
-namespace App\Http\Controllers;
-
-class FrontendController extends Controller
+class FrontendController
 {
     public function showLogin()
     {
